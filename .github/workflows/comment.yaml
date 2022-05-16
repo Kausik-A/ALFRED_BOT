@@ -1,0 +1,31 @@
+name: pull request comment
+on:
+  issue_comment:                                     
+    types: [created, edited, deleted]
+
+jobs:
+  Adding_Labels:
+   if: contains(github.event.comment.html_url, '/pull/')    # check if the comments come from pull request, exclude those from issue.
+   runs-on: [ubuntu-latest]
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v3
+     - name: Dump GitHub context
+       env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+       run: |
+          echo "$GITHUB_CONTEXT"
+     - name: Checking the comment for command
+       env:
+          issue_url: ${{ github.event.comment.issue_url }}
+          comment: ${{ github.event.comment.body }}
+          comment_user_id: ${{ github.event.comment.user.login }}
+       if: contains(github.event.comment.body, '/lgtm') || contains(github.event.comment.body, '/lgtm_cancel') || contains(github.event.comment.body, '/approve') || contains(github.event.comment.body, '/approve_cancel') 
+       run: |
+         export approvers="$(yq e ".assigneeGroups.approvers_maintainers.Approvers[]" auto_assign.yaml)"
+         export reviewers="$(yq e ".assigneeGroups.approvers_maintainers.Reviewers[]" auto_assign.yaml)"
+         echo "$issue_url"
+         echo "$comment"
+         echo "$approvers"
+         echo "$maintainers"
+         python3 main.py $issue_url $comment $comment_user_id 

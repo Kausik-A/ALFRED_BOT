@@ -1,0 +1,26 @@
+name: pull request comment
+on:
+  pull_request_target:
+    types: [opened,ready_for_review]
+
+jobs:
+ add_reviewers:
+   runs-on: [ubuntu-latest]
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v3
+     - name: Dump GitHub context
+       env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+       run: |
+          echo "$GITHUB_CONTEXT"
+     - name: Place a initial comment with reviewers
+       env:
+          issue_url: ${{ github.event.pull_request._links.comments.href }}
+       run: |
+          export reviewers="$(yq e ".assigneeGroups.approvers_maintainers.Reviewers[]" auto_assign.yaml)"
+          python3 comment.py $issue_url 
+            
+
+
+           
