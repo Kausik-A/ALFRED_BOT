@@ -3,8 +3,7 @@ import random
 import sys
 import os
 
-auth=("Kausik-A","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")
-#url = f'https://api.github.com/repos/Kausik-A/Alfred/issues/19/comments'
+auth=("Kausik-A",os.environ.get('API_ACCESS_KEY'))
 url = f"{sys.argv[1]}"
 verified_reviewers = os.environ.get('reviewers').split()
 element = random.sample(verified_reviewers,2)

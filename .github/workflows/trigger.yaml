@@ -17,9 +17,10 @@ jobs:
      - name: Place a initial comment with reviewers
        env:
           issue_url: ${{ github.event.pull_request._links.comments.href }}
+          api_access_key:  ${{ secrets.API_ACCESS_KEY }}
        run: |
           export reviewers="$(yq e ".assigneeGroups.approvers_maintainers.Reviewers[]" auto_assign.yaml)"
-          python3 comment.py $issue_url 
+          python3 comment.py $issue_url $api_access_key
             
 
 
