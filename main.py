@@ -17,7 +17,7 @@ def check_permission(flag, user):
     else:
         return False
 
-auth=("Kausik-A",os.environ.get('API_ACCESS_KEY'))
+auth=("Kausik-A",os.environ.get('api_access_key'))
 url = f"{sys.argv[1]}/labels"
 comment_string = str(sys.argv[2])
 

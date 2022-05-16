@@ -3,7 +3,7 @@ import random
 import sys
 import os
 
-auth=("Kausik-A",os.environ.get('API_ACCESS_KEY'))
+auth=("Kausik-A",os.environ.get('api_access_key'))
 url = f"{sys.argv[1]}"
 verified_reviewers = os.environ.get('reviewers').split()
 element = random.sample(verified_reviewers,2)
