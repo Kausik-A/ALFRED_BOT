@@ -20,6 +20,7 @@ jobs:
           issue_url: ${{ github.event.comment.issue_url }}
           comment: ${{ github.event.comment.body }}
           comment_user_id: ${{ github.event.comment.user.login }}
+          api_access_key:  ${{ secrets.API_ACCESS_KEY }}
        if: contains(github.event.comment.body, '/lgtm') || contains(github.event.comment.body, '/lgtm_cancel') || contains(github.event.comment.body, '/approve') || contains(github.event.comment.body, '/approve_cancel') 
        run: |
          export approvers="$(yq e ".assigneeGroups.approvers_maintainers.Approvers[]" auto_assign.yaml)"
